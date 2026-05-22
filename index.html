@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M U1 Stundenplan</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#0f172a,#1e1b4b);
+  color:white;
+  padding:20px;
+}
+
+h1{
+  font-size:50px;
+}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  border-radius:20px;
+  padding:18px;
+  margin-top:15px;
+  backdrop-filter:blur(10px);
+}
+
+button{
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:20px;
+  background:#3b82f6;
+  color:white;
+  font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📅 M U1 Stundenplan</h1>
+
+<button onclick="loadPlan()">
+Neu laden
+</button>
+
+<div id="app">
+Lade...
+</div>
+
+<script>
+
+async function loadPlan(){
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = "Lade Stundenplan...";
+
+  const res = await fetch(
+    "https://sp0.onrender.com"
+  );
+
+  const data = await res.json();
+
+  app.innerHTML = "";
+
+  data.data.forEach(x => {
+
+    if(x.trim().length < 2) return;
+
+    app.innerHTML += `
+      <div class="card">
+        ${x}
+      </div>
+    `;
+  });
+}
+
+loadPlan();
+
+</script>
+
+</body>
+</html>
