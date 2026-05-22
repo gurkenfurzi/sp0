@@ -4,27 +4,24 @@ const fetch = require("node-fetch");
 
 const app = express();
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.get("/", async (req, res) => {
   try {
-    const url =
-      "https://www.phs-lu.de/wp-content/uploads/2023/04/Stundenplan.pdf";
-
+    const url = "https://www.phs-lu.de/wp-content/uploads/2023/04/Stundenplan.pdf";
     const data = await fetch(url);
     const buffer = await data.buffer();
-
     const parsed = await pdf(buffer);
 
     const text = parsed.text;
 
-    const lines = text
-      .split("\n")
-      .filter(x => x.includes("M") || x.includes("U1"));
-
     res.json({
       ok: true,
-      data: lines
+      text: text
     });
-
   } catch (e) {
     res.json({
       ok: false,
@@ -33,4 +30,4 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
