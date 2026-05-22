@@ -18,7 +18,7 @@ app.get("/", async (req, res) => {
 
     const lines = text
       .split("\n")
-      .filter(x => x.includes("M U1"));
+      .filter(x => x.includes("M") || x.includes("U1"));
 
     res.json({
       ok: true,
